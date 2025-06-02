@@ -36,27 +36,7 @@ class HTMLNode:
                 (f"Props: {self.props}")
         )
 
-    def test_values(self):
-        node = HTMLNode(
-            "div",
-            "I wish I could read",
-        )
-        self.assertEqual(
-            node.tag,
-            "div",
-        )
-        self.assertEqual(
-            node.value,
-            "I wish I could read",
-        )
-        self.assertEqual(
-            node.children,
-            None,
-        )
-        self.assertEqual(
-            node.props,
-            None,
-        )
+
     
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
@@ -64,7 +44,7 @@ class LeafNode(HTMLNode):
     
     def to_html(self):
         if self.value == None:
-            raise ValueError("All nodes must have a value")
+            raise ValueError("leaf node must have a value")
         if self.tag == None:
             return self.value
         else:
@@ -72,3 +52,19 @@ class LeafNode(HTMLNode):
     
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
+
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props=None):
+        super().__init__(tag, None, children, props)
+    
+    def to_html(self):
+        if self.tag == None:
+            raise ValueError("parent node must have a tag")
+        if self.children == None:
+            raise ValueError("parent node must have children")
+        children_values = ""
+        for child in self.children:
+            if child.value == None:
+                raise ValueError("all children of parent node must have values")
+            children_values += child.to_html()
+        return f"<{self.tag}{self.props_to_html()}>{children_values}</{self.tag}>"
