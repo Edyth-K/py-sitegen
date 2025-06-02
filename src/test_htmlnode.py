@@ -12,17 +12,16 @@ class TestHTMLNode(unittest.TestCase):
         self.assertEqual(expected, html_node.props_to_html())
 
     def test_repr(self):
-        html_node = HTMLNode("p", "This is a paragraph",
-                        None, {"href": "https://www.google.com",
-                            "target": "_blank",}
-                    )
-        expected = ('HTMLNode:\n'+
-                    'Tag: p\n'+
-                    'Value: This is a paragraph\n'+
-                    'Children: None\n'+
-                    "Props: {'href': 'https://www.google.com', 'target': '_blank'}"
-                    )
-        self.assertEqual(repr(html_node), expected)
+        node = HTMLNode(
+            "p",
+            "What a strange world",
+            None,
+            {"class": "primary"},
+        )
+        self.assertEqual(
+            node.__repr__(),
+            "HTMLNode(p, What a strange world, children: None, {'class': 'primary'})",
+        )
     
     def test_props_to_html_on_empty_node(self):
         html_node = HTMLNode()
