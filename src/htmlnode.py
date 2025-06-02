@@ -21,13 +21,17 @@ class HTMLNode:
     
     def props_to_html(self):
         output = ""
-        for attribute in self.props:
-            output += f"{attribute}={self.props[attribute]} "
-        return output[:-1]
-    
+        try:
+            for attribute in self.props:
+                output += f' {attribute}="{self.props[attribute]}"'
+            return output
+        except TypeError as e:
+            return output
+        
     def __repr__(self):
-        print("HTMLNode:")
-        print(f"Tag: {self.tag}")
-        print(f"Value: {self.value}")
-        print(f"Children: {self.children}")
-        print(f"Props: {self.props}")
+        return (("HTMLNode:\n") +
+                (f"Tag: {self.tag}\n") +
+                (f"Value: {self.value}\n") +
+                (f"Children: {self.children}\n") +
+                (f"Props: {self.props}")
+        )
