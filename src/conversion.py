@@ -19,3 +19,42 @@ def text_node_to_html_node(text_node):
             return LeafNode('img', "", {"src":url, "alt":text})
         case _:
             raise Exception("Invalid Text Type")
+
+def split_nodes_delimiter(old_nodes, delimiter, text_type):
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
+        split_nodes = []
+        sections = node.text.split(delimiter)
+        if len(sections) % 2 == 0:
+            raise ValueError("Invalid Markdown")
+        for i in range(len(sections)):
+            if sections[i] == "":
+                continue
+            if i % 2 == 0:
+                split_nodes.append(TextNode(sections[i], TextType.TEXT))
+            else:
+                split_nodes.append(TextNode(sections[i], text_type))
+        new_nodes.extend(split_nodes)
+    return new_nodes
+
+def md_to_text_node(md):
+    '''
+    Converts raw markdown to TextNode
+
+    For example, given the string:
+        
+        This is text with a **bolded phrase** in the middle
+
+    Return:
+
+        [
+        TextNode("This is text with a ", TextType.TEXT),
+        TextNode("bolded phrase", TextType.BOLD),
+        TextNode(" in the middle", TextType.TEXT),
+        ]
+    '''
+    pass
+
