@@ -1,5 +1,4 @@
-from textnode import TextType, TextNode
-from generate_page import generate_page
+from generate_page import generate_pages_recursive
 import shutil
 import os
 
@@ -15,15 +14,9 @@ def generate_public():
         shutil.rmtree(dst_path)
     shutil.copytree(src_path, dst_path)
 
-
 def main():
-    print("Hello World.")
     generate_public()
-    generate_page(
-        os.path.join(dir_path_content, "index.md"),
-        template_path,
-        os.path.join(dir_path_public, "index.html"),
-    )
+    generate_pages_recursive(dir_path_content, template_path, dir_path_public)  
 
 if __name__ == "__main__":
     main()
